@@ -36,6 +36,7 @@ app.get('/todo/:id', (req, res) => {
     // cari item di array data yang id-nya sama
     const item = data.find((el) => el.id == id)
     res.status(200).send(item) // kirim item yang ditemukan
+    
 })
 
 app.post('/todo', (req, res) => {
