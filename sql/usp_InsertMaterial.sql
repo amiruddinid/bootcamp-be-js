@@ -1,3 +1,4 @@
+-- sp insert material
 CREATE  PROCEDURE amir.usp_InsertMaterial
 	--PARAMETER
 	@Input_PartNumber nvarchar(255),
