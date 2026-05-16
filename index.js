@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
+//array
 const data = []; 
-
+app.use(express.json())
 // Router
 // API
 // GET Request di endpoint
@@ -36,7 +37,8 @@ app.get('/todo/:id', (req, res) => {
 
 app.post('/todo', (req, res) => {
     const body = req.body;
-    data.push(body);
+    console.log('isibody', body);
+    data.push(body)
     res.status(201).send('Todo Created');
 })
 
