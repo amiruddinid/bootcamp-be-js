@@ -101,6 +101,17 @@ router.post('/sp', async(req, res) => {
     //         @Input_SupplierID='${body.SUPPLIER_ID}',
     //         @Input_User='${body.USER}'
     //     `);
+    // https://github.com/tediousjs/node-mssql#es6-tagged-template-literals
+    // Jika tanpa () maka akan dianggap seperti Parameterization
+    // const result = await pool.request()      
+    //     .query`EXEC amir.usp_InsertMaterial 
+    //         @Input_PartNumber='${body.PART_NUMBER}',
+    //         @Input_Name='${body.NAME}',
+    //         @Input_Category='${body.CATEGORY}',
+    //         @Input_Unit='${body.UNIT}',
+    //         @Input_SupplierID='${body.SUPPLIER_ID}',
+    //         @Input_User='${body.USER}'
+    //     `;
 
     res.status(201).json({
         message: 'Data material berhasil ditambahkan',
