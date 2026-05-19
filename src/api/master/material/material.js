@@ -139,8 +139,8 @@ router.put('/:id', async(req, res) => {
     })
 })
 
-router.delete('/', async(req, res) => {
-    const id = req.body.ID || req.body.id || req.query.id;
+router.delete('/:id', async(req, res) => {
+    const id = req.params.id;
     const pool = await poolPromise;
 
     await pool.request()
