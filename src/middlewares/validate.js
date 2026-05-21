@@ -1,4 +1,5 @@
 const AppError = require('../utils/AppError'); 
+const errorHandller = require('./errorHandler');
 
 const validateInput = (schema) => (req, res, next) => {
     // Lakukan validasi menggunakan schema yang diberikan
@@ -11,7 +12,7 @@ const validateInput = (schema) => (req, res, next) => {
     // Jika validasi gagal, buat error baru dengan pesan yang sesuai dan status code 400
     if (!result.success) {
         const messages = result.error.issues.map(e => e.message).join(', ');
-        return next(new AppError(messages, 400));
+        return errorHandller(new AppError(messages, 400), req, res, next);
     }
 
     // Jika validasi berhasil, update req dengan data yang sudah di-parse
