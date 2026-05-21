@@ -4,8 +4,9 @@ const { poolPromise, sql } = require('../../../config/db'); // import koneksi da
 const AppError = require('../../../utils/AppError'); // import custom error class untuk error handling
 const validateInput = require('../../../middlewares/validate'); // import middleware untuk validasi input
 const { deleteMaterialByIdSchema, createMaterialSchema } = require('./material.schema'); // import schema validasi untuk delete material
+const authorize = require('../../../middlewares/authorize'); // import middleware untuk otorisasi akses
 
-
+router.use(authorize); // pasang middleware authorize untuk semua route di router ini
 // CLEAN ARCHITECTURE
 // asynchronous 
 router.get('/', async(req, res, next) => { // route GET untuk mengambil semua material

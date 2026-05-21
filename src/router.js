@@ -6,9 +6,15 @@ const materialRouter =
 //     require('./api/master/carModel/carModel')
 const errorTestRouter =
     require('./api/master/error-test/test') 
+//auth
+const authRouter = require('./api/auth/auth');
+
 
 router.use('/material', materialRouter)
 // router.use('/car-model', carModelRouter)
 router.use('/error-test', errorTestRouter)
+//auth
+router.use('/auth', authRouter)
+
 //default export
 module.exports = router;
