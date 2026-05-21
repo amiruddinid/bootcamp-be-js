@@ -25,7 +25,6 @@ router.get('/', async(req, res, next) => { // route GET untuk mengambil semua ma
 })
 
 router.get('/:id', async(req, res, next) => { // route GET untuk mengambil material berdasarkan ID
-
     try {
         const id = req.params.id; // ambil parameter id dari URL
         const pool = await poolPromise; // dapatkan koneksi database dari pool
