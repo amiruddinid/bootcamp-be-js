@@ -7,7 +7,7 @@ const materialRouter =
 const errorTestRouter =
     require('./api/master/error-test/test') 
 //auth
-const authRouter = require('./api/auth/auth');
+const authRouter = require('./api/auth/auth.controller');
 
 
 router.use('/material', materialRouter)
