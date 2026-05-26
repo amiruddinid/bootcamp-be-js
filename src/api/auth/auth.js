@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const {generateToken, verifyToken} = require('../../utils/jwt');
 const {hashPassword, comparePassword} = require('../../utils/bcrypt');
-const {postRegisterSchema} = require('./auth.schema');
+const {postRegisterSchema, postLoginSchema} = require('./auth.schema');
 const validateInput = require('../../middlewares/validate');
 const { poolPromise, sql } = require('../../config/db');
+const { email } = require('zod');
 
 // Simulasi database pengguna
 const users = [];
@@ -55,27 +56,48 @@ router.post('/register', validateInput(postRegisterSchema), async (req, res) => 
 });
 
 // Login 
-router.post('/login', async (req, res) => {
-    const {username, password} = req.body;
+router.post('/login', validateInput(postLoginSchema), async (req, res) => {
+    try{
+        const {username, password} = req.body;
+        
+        // Cari pengguna berdasarkan username
+        // Ubah ke query ke database untuk mencari pengguna berdasarkan username
+        const pool = await poolPromise; // tunggu koneksi pool database siap
+        const userResult = await pool.request() // buat request SQL baru
+            .query`
+                SELECT u.*, r.ROLE_NAME FROM amir.TB_M_USER u 
+                JOIN amir.TB_M_ROLE r ON u.ROLE_ID = r.ID 
+                WHERE u.USERNAME = ${username} `; // eksekusi query untuk ambil seluruh data
+        
+        const user = userResult.recordset[0]; // ambil pengguna pertama dari hasil query
+        console.log('User found:', user);
+        if (!user) {
+            return res.status(400).json({message: 'Please check your username and password'});
+        }
+        // line 65-67, 78, 85-91
 
-    // Cari pengguna berdasarkan username
-    const user = users.find(user => user.username === username);
-    if (!user) {
-        return res.status(400).json({message: 'Please check your username and password'});
+        // Bandingkan password
+        const isMatch = await comparePassword(password, user.PASSWORD);
+        if (!isMatch) {
+            return res.status(400).json({message: 'Please check your username and password'});
+        }
+
+        // Generate token
+        const token = generateToken({username: user.USERNAME});
+        res.status(200).json({
+            data:{
+                username: user.USERNAME,
+                email: user.EMAIL,
+                role: user.ROLE_NAME,
+                noreg: user.NOREG,
+                token
+            },
+            message: 'Login successful'
+        });
+    } catch (err) {
+        console.error('Error during login:', err);
+        res.status(500).json({message: 'Internal server error'});
     }
-
-    // Bandingkan password
-    const isMatch = await comparePassword(password, user.password);
-    if (!isMatch) {
-        return res.status(400).json({message: 'Please check your username and password'});
-    }
-
-    // Generate token
-    const token = generateToken({username: user.username});
-    res.status(200).json({
-       data:{token},
-       message: 'Login successful'
-    });
 });
 
 module.exports = router;

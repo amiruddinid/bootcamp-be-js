@@ -16,6 +16,16 @@ const postRegisterSchema = z.object({
     body: registerSchema
 })
 
+const loginSchema = z.object({
+    username: z.string(),
+    password: z.string()
+})
+
+const postLoginSchema = z.object({
+    body: loginSchema
+})
+
 module.exports = {
-    postRegisterSchema
+    postRegisterSchema,
+    postLoginSchema
 }
