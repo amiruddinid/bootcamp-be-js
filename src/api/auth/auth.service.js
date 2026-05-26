@@ -10,7 +10,7 @@ const registerUser = async ({USERNAME, PASSWORD, NOREG, EMAIL, ROLE_ID}) => {
         // logic bisnis untuk cek apakah username sudah ada
         const user = await findUserByUsername(USERNAME);
         
-        if (user.length > 0) {
+        if (user.rows > 0) {
             return {status: 400, data: {message: 'Username already exists'}};
         }
 
@@ -20,6 +20,13 @@ const registerUser = async ({USERNAME, PASSWORD, NOREG, EMAIL, ROLE_ID}) => {
             Password hash: ${hashedPassword}`);
 
         // Simpan pengguna ke "database" (logic bisnis untuk menyimpan data pengguna)
+        // {
+        //     USERNAME: USERNAME,
+        //     PASSWORD: 'hashedpassword123',
+        //     NOREG: NOREG,
+        //     EMAIL: EMAIL
+        //     ROLE_ID: ROLE_ID
+        // }
         const newUserResult = await createUser({
             USERNAME,
             PASSWORD: hashedPassword,
@@ -38,7 +45,7 @@ const registerUser = async ({USERNAME, PASSWORD, NOREG, EMAIL, ROLE_ID}) => {
                 USERNAME: newUserResult.USERNAME,
                 NOREG: newUserResult.NOREG,
                 EMAIL: newUserResult.EMAIL,
-                ROLE_ID: newUserResult.ROLE_ID
+                ROLE_NAME: newUserResult.ROLE_NAME
             },
             message: 'User registered successfully'
         };

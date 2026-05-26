@@ -5,7 +5,10 @@ const validateInput = require('../../middlewares/validate');
 const authorize = require('../../middlewares/authorize');
 const {registerUser, loginUser, getProfile} = require('./auth.service');
 
-// Controller : (routing, menerima request, memanggil service, mengirim response)
+// MVC Controller : (routing, menerima request, bussiness logic, mengirim response)
+// Service Repository pattern (Clean Architecture) :
+// Controller bertanggung jawab untuk routing, menerima request, 
+// memanggil service, dan mengirim response
 // 1. memproses data, 
 // 2. menerima request dari client, 
 // 3. memanggil service untuk memproses data, 

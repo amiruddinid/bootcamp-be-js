@@ -5,11 +5,12 @@ const AppError = require('../../../utils/AppError'); // import custom error clas
 const validateInput = require('../../../middlewares/validate'); // import middleware untuk validasi input
 const { deleteMaterialByIdSchema, createMaterialSchema } = require('./material.schema'); // import schema validasi untuk delete material
 const authorize = require('../../../middlewares/authorize'); // import middleware untuk otorisasi akses
+const { functionGuard, featureGuard } = require('../../../middlewares/guard');
 
-router.use(authorize); // pasang middleware authorize untuk semua route di router ini
+router.use(authorize, functionGuard('masterMaterial')); // pasang middleware authorize untuk semua route di router ini
 // CLEAN ARCHITECTURE
 // asynchronous 
-router.get('/', async(req, res, next) => { // route GET untuk mengambil semua material
+router.get('/', featureGuard("viewMaterial"), async(req, res, next) => { // route GET untuk mengambil semua material
     try {
         const pool = await poolPromise; // tunggu koneksi pool database siap
         const result = await pool.request() // buat request SQL baru
@@ -25,7 +26,7 @@ router.get('/', async(req, res, next) => { // route GET untuk mengambil semua ma
     
 })
 
-router.get('/:id', async(req, res, next) => { // route GET untuk mengambil material berdasarkan ID
+router.get('/:id', featureGuard('viewMaterialDetail'), async(req, res, next) => { // route GET untuk mengambil material berdasarkan ID
     try {
         const id = req.params.id; // ambil parameter id dari URL
         const pool = await poolPromise; // dapatkan koneksi database dari pool
@@ -78,7 +79,7 @@ router.get('/:id', async(req, res, next) => { // route GET untuk mengambil mater
 // 3. Insert data ke table TB_M_MATERIAL dengan body request 
 // dan business key yang sudah dibuat
 // 4. Return response dengan status 201 dan data yang sudah diinsert
-router.post('/', validateInput(createMaterialSchema), async(req, res, next) => { // route POST untuk membuat material baru tanpa stored procedure
+router.post('/', featureGuard('createMaterial'), validateInput(createMaterialSchema), async(req, res, next) => { // route POST untuk membuat material baru tanpa stored procedure
     try {
         const body = req.body; // ambil data request body dari client
 
@@ -116,6 +117,7 @@ router.post('/', validateInput(createMaterialSchema), async(req, res, next) => {
             data: result.recordset[0] // kirim data yang baru dibuat sebagai response
         })
     } catch (error) {
+        console.error(error); // log error ke console untuk debugging
         return next(new AppError('Internal Server Error', 500));
     }
     

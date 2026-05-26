@@ -1,5 +1,6 @@
 const z = require('zod'); // import library zod untuk validasi schema
 
+//model untuk validasi input data, seperti register, login, dll (data modelling)
 const registerSchema = z.object({
     USERNAME: z.string().min(3, 'Username must be at least 3 characters long'),
     PASSWORD: z.string().min(6, "Must be at least 6 characters")
