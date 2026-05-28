@@ -54,7 +54,7 @@ router.put('/:id', featureGuard("editMaterial"), validateInput(putMaterialSchema
 // DELETE /api/master/material/:id : untuk menghapus material berdasarkan ID
 router.delete('/:id', featureGuard("deleteMaterial"), validateInput(deleteMaterialSchema), 
     async(req, res, next) => {
-        const serviceResponse = await deleteMaterialById(req.params.id); // panggil service untuk menghapus material
+        const serviceResponse = await deleteMaterial(req.params.id); // panggil service untuk menghapus material
         return res.status(serviceResponse.status)
             .json(serviceResponse.data);
     }

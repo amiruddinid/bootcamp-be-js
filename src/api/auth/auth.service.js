@@ -60,7 +60,7 @@ const loginUser = async ({username, password}) => {
     try{
         // Cari pengguna berdasarkan username
         const user = await findUserByUsername(username);
-        if (!user) {
+        if (!user || user.rows === 0) {
             return {status: 400, data: {message: 'Please check your username and password'}};
         }
 
