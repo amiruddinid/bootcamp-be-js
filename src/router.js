@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const materialRouter =
-    require('./api/master/material/material')
+    require('./api/master/material/material.controller')
 // const carModelRouter = 
 //     require('./api/master/carModel/carModel')
 const errorTestRouter =
