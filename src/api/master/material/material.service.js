@@ -173,7 +173,7 @@ const deleteMaterial = async (id) => {
         };
     } catch (err) {
         console.error(err); // log error ke console untuk debugging
-        if (err.number === 547) {
+        if (err.number === 547) { // cek jika error number 547 yang berarti terjadi foreign key violation
             console.warn('Foreign Key Violation:', err.message);
             // Example message: "The INSERT statement conflicted with the FOREIGN KEY constraint..."
             
