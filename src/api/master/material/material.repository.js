@@ -41,11 +41,17 @@ const insertMaterial = async (materialData) => {
     const pool = await poolPromise;
     const request = pool.request();
     const {PART_NUMBER, NAME, CATEGORY, UNIT, SUPPLIER_ID, CREATED_BY} = materialData;
+
+    const businessKeyResult = await pool.request() // buat request baru untuk generate business key
+            .input('Input_Prefix', 'MAT') // kirim prefix 'MAT' sebagai input ke stored procedure
+            .output('Output_NewID', sql.VarChar(50), null) // deklarasikan output parameter untuk ID baru
+            .execute('amir.usp_GenerateBusinessKey'); // jalankan stored procedure generate business key
+
     const result = await request.query`
-        INSERT INTO amir.TB_M_MATERIAL (PART_NUMBER, NAME, CATEGORY, UNIT, SUPPLIER_ID, CREATED_BY, CREATED_DT) 
+        INSERT INTO amir.TB_M_MATERIAL (ID, PART_NUMBER, NAME, CATEGORY, UNIT, SUPPLIER_ID, CREATED_BY, CREATED_DT) 
         OUTPUT INSERTED.ID, INSERTED.PART_NUMBER, INSERTED.NAME, INSERTED.CATEGORY, INSERTED.UNIT, 
         INSERTED.SUPPLIER_ID, INSERTED.CREATED_BY, INSERTED.CREATED_DT
-        VALUES (${PART_NUMBER}, ${NAME}, ${CATEGORY}, ${UNIT}, ${SUPPLIER_ID}, ${CREATED_BY}, GETDATE())`;
+        VALUES (${businessKeyResult.output.Output_NewID}, ${PART_NUMBER}, ${NAME}, ${CATEGORY}, ${UNIT}, ${SUPPLIER_ID}, ${CREATED_BY}, GETDATE())`;
     
     return {
         data: result.recordset[0],
