@@ -5,7 +5,7 @@ const createMaterialSchema = z.object({
     NAME: z.string().min(1, 'Name is required'), // validasi name harus string dan tidak kosong
     CATEGORY: z.string().min(1, 'Category is required'), // validasi category harus string dan tidak kosong
     UNIT: z.string().min(1, 'Unit is required'), // validasi unit harus string dan tidak kosong
-    SUPPLIER_ID: z.number().int().positive('Supplier ID must be a positive integer') // validasi supplier ID harus angka positif
+    SUPPLIER_ID: z.string().min(1, 'Supplier ID is required')
 });
 
 const postMaterialSchema = z.object({
