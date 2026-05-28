@@ -114,16 +114,18 @@ const updateMaterial = async (id, materialData) => {
                 }
             };
         }
-        const getMaterialByPartNumber = await findMaterialByPartNumber(body.PART_NUMBER); // panggil fungsi untuk mengambil material berdasarkan PART_NUMBER dari database
-        if(getMaterialByPartNumber.rows > 0 && getMaterialByPartNumber.rows[0].ID !== id) {
-            return {
-                status: 409,
-                data: {
+        if(getMaterialByIdResult.data.PART_NUMBER !== body.PART_NUMBER) { // cek jika PART_NUMBER di request body berbeda dengan PART_NUMBER di database
+            const getMaterialByPartNumber = await findMaterialByPartNumber(body.PART_NUMBER); // panggil fungsi untuk mengambil material berdasarkan PART_NUMBER dari database
+            if(getMaterialByPartNumber.rows > 0) {
+                return {
                     status: 409,
-                    data: null,
-                    message: 'Material with same part number already exists'
-                }
-            };
+                    data: {
+                        status: 409,
+                        data: null,
+                        message: 'Material with same part number already exists'
+                    }
+                };
+            }
         }
         const result = await updateMaterialById(id, body); // panggil fungsi untuk mengupdate data material di database
         return {
