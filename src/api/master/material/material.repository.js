@@ -83,7 +83,7 @@ const deleteMaterialById = async (id) => {
         DELETE FROM amir.TB_M_MATERIAL WHERE ID = ${id}`;
     
     return {
-        data: result.recordset[0],
+        data: null,
         rows: result.rowsAffected[0]
     };
 };

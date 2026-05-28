@@ -40,7 +40,7 @@ async(req, res, next) => {
 });
 
 // PUT /api/master/material/:id : untuk mengupdate material berdasarkan ID
-router.put('/:id', featureGuard("editMaterial"), validateInput(putMaterialSchema),
+router.put('/:id', featureGuard("updateMaterial"), validateInput(putMaterialSchema),
     async(req, res, next) => {
         const serviceResponse = await updateMaterial(req.params.id, {
             ...req.body,
