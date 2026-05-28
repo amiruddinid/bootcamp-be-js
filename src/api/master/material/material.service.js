@@ -171,8 +171,32 @@ const deleteMaterial = async (id) => {
                 message: 'Data material berhasil dihapus'
             }
         };
-    } catch (error) {
-        console.error(error); // log error ke console untuk debugging
+    } catch (err) {
+        console.error(err); // log error ke console untuk debugging
+        if (err.number === 547) {
+            console.warn('Foreign Key Violation:', err.message);
+            // Example message: "The INSERT statement conflicted with the FOREIGN KEY constraint..."
+            
+            if (err.message.includes('FK_')) {
+                return {
+                    status: 409,
+                    data: {
+                        status: 409,
+                        data: null,
+                        message: 'Cannot delete material because it is referenced by existing orders. Please delete the related orders first.'
+                    },
+                };
+            } else {
+                return {
+                    status: 500,
+                    data: {
+                        status: 500,
+                        data: null,
+                        message: 'Internal Server Error'
+                    },
+                }
+            }
+        } 
         return {
             status: 500,
             data: {
