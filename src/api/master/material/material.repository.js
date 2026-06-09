@@ -3,7 +3,7 @@ const { poolPromise, sql } = require('../../../config/db');
 const findAllMaterial = async () => {
     const pool = await poolPromise;
     const request = pool.request();
-    const result = await request.query('SELECT ID, PART_NUMBER, NAME, CATEGORY, UNIT, CREATED_DT, CREATED_BY, CHANGED_DT, CHANGED_BY FROM amir.TB_M_MATERIAL');
+    const result = await request.query('SELECT ID, PART_NUMBER, NAME, CATEGORY, UNIT, CREATED_DT, CREATED_BY, CHANGED_DT, CHANGED_BY FROM amir.TB_M_MATERIAL ORDER BY CREATED_DT DESC');
     
     return {
         data: result.recordset,
