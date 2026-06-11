@@ -12,6 +12,7 @@ const findAllBom = async () => {
         LEFT JOIN amir.TB_M_CAR_MODEL c ON b.CAR_MODEL_ID = c.ID
         LEFT JOIN amir.TB_R_INVENTORY i ON b.INVENTORY_ID = i.ID
         LEFT JOIN amir.TB_M_MATERIAL m ON i.MATERIAL_ID = m.ID
+        ORDER BY CREATED_DT DESC
     `);
     
     return {

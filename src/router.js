@@ -10,6 +10,8 @@ const supplierRouter = require('./api/master/supplier/supplier.controller');
 const bomRouter = require('./api/master/bom/bom.controller');
 const rolePermissionsRouter = require('./api/master/rolePermissions/rolePermissions.controller');
 const userRouter = require('./api/master/user/user.controller');
+const autoOrderRouter = require('./api/master/autoOrder/autoOrder.controller');
+const inventoryRouter = require('./api/master/inventory/inventory.controller');
 
 const errorTestRouter = require('./api/master/error-test/test');
 const authRouter = require('./api/auth/auth.controller');
@@ -28,6 +30,8 @@ router.use('/user', userRouter);
 // Transaction Routes
 router.use('/transaction/production', productionTransactionRouter);
 
+router.use('/auto-order', autoOrderRouter);
+router.use('/inventory', inventoryRouter);
 router.use('/error-test', errorTestRouter);
 router.use('/auth', authRouter);
 
